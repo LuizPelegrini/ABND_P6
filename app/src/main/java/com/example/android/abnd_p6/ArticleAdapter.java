@@ -21,9 +21,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         private TextView dateTextView;
     }
 
-
-
-    public ArticleAdapter(@NonNull Context context, @NonNull List<Article> objects) {
+    ArticleAdapter(@NonNull Context context, @NonNull List<Article> objects) {
         super(context, 0, objects);
     }
 
