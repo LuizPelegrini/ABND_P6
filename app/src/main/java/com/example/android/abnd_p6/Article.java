@@ -2,11 +2,11 @@ package com.example.android.abnd_p6;
 
 public class Article {
 
-    private String mTitle;
-    private String mUrl;
-    private String mSectionName;
-    private String mAuthorName;
-    private String mDatePublished;
+    private String mTitle;          // The title of the article
+    private String mUrl;            // The url to the article
+    private String mSectionName;    // The section this article belongs to
+    private String mAuthorName;     // The author who wrote/published this article
+    private String mDatePublished;  // The date this article was published
 
     public Article (String title, String url, String sectionName, String authorName, String datePublished){
         mTitle = title;
@@ -16,6 +16,7 @@ public class Article {
         mDatePublished = datePublished;
     }
 
+    ///// GETTERS /////
     public String getTitle() {
         return mTitle;
     }
