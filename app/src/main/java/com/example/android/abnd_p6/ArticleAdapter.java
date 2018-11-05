@@ -37,6 +37,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
 
             viewHolder.titleTextView = convertView.findViewById(R.id.title_text_view);
+            viewHolder.authorNameTextView = convertView.findViewById(R.id.author_text_view);
+            viewHolder.sectionNameTextView = convertView.findViewById(R.id.section_text_view);
+            viewHolder.dateTextView = convertView.findViewById(R.id.date_text_view);
 
             convertView.setTag(viewHolder);
         }else{
@@ -47,6 +50,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // Show the data from the array to the list item view
         if(article != null) {
             viewHolder.titleTextView.setText(article.getTitle());
+            viewHolder.authorNameTextView.setText(article.getAuthorName());
+            viewHolder.sectionNameTextView.setText(article.getSectionName());
+            viewHolder.dateTextView.setText(article.getDatePublished());
         }
 
         return convertView;

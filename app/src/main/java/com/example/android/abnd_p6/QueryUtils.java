@@ -36,6 +36,7 @@ public class QueryUtils {
         try {
             JSONObject root = new JSONObject(jsonData);
             JSONArray results = root.getJSONObject("response").optJSONArray("results");
+
             if(results != null){
                 for (int i = 0; i < results.length(); i++) {
                     String title;
@@ -49,13 +50,17 @@ public class QueryUtils {
                     if(titleAndPossibleAuthor != null){
                         title = titleAndPossibleAuthor[0];
                         authorName = titleAndPossibleAuthor[1];
-                    }else{
+                    } else {
                         title = webTitle;
                         authorName = getAuthorName(results.getJSONObject(i));
                     }
 
+                    String url = results.getJSONObject(i).optString("webUrl");
+                    String sectionName = results.getJSONObject(i).optString("sectionName");
+                    String date = results.getJSONObject(i).optString("webPublicationDate");
+
                     // Add to the articles list
-                    articles.add(new Article(title, "", "", authorName, ""));
+                    articles.add(new Article(title, url, sectionName, authorName, date));
                 }
             }
         } catch (JSONException e) {
