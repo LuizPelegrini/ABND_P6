@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="list_item_height">96dp</dimen>
+    <dimen name="title_size">22sp</dimen>
+    <dimen name="author_name_size">12sp</dimen>
+    <dimen name="date_size">12sp</dimen>
 </resources>

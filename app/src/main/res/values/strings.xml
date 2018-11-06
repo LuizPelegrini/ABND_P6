@@ -1,3 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">ABND_P6</string>
+    <string name="by_author_name">By <xliff:g id="author_name" example="Stewart MacFarlane">%s</xliff:g></string>
 </resources>

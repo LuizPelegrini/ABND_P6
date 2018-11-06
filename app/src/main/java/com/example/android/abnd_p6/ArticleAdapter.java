@@ -3,6 +3,7 @@ package com.example.android.abnd_p6;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import java.util.List;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
+    private Context mContext;   // The context coming from the MainActivity
+    private List<Article> mArticles;
+
     // ViewHolder design pattern to remove unnecessary findViewById calls
     private static class ViewHolder {
         private TextView titleTextView;
@@ -21,8 +25,10 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         private TextView dateTextView;
     }
 
-    ArticleAdapter(@NonNull Context context, @NonNull List<Article> objects) {
-        super(context, 0, objects);
+    ArticleAdapter(@NonNull Context context, @NonNull List<Article> articles) {
+        super(context, 0, articles);
+        this.mArticles = articles;
+        this.mContext = context;
     }
 
     @NonNull
@@ -34,7 +40,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // If there is no view to be recycle, inflate a new one
         if(convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
 
             viewHolder.titleTextView = convertView.findViewById(R.id.title_text_view);
             viewHolder.authorNameTextView = convertView.findViewById(R.id.author_text_view);
@@ -50,11 +56,26 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // Show the data from the array to the list item view
         if(article != null) {
             viewHolder.titleTextView.setText(article.getTitle());
-            viewHolder.authorNameTextView.setText(article.getAuthorName());
+
+            // If there is no author's name, hides the author's textview
+            if(TextUtils.isEmpty(article.getAuthorName()))
+                viewHolder.authorNameTextView.setVisibility(View.GONE);
+            else {
+                viewHolder.authorNameTextView.setText(mContext.getString(R.string.by_author_name, article.getAuthorName()));
+                viewHolder.authorNameTextView.setVisibility(View.VISIBLE);
+            }
+
             viewHolder.sectionNameTextView.setText(article.getSectionName());
             viewHolder.dateTextView.setText(article.getDatePublished());
         }
 
         return convertView;
+    }
+
+    public void setArticles(List<Article> articles)
+    {
+        mArticles.clear();
+        mArticles.addAll(articles);
+        notifyDataSetChanged();
     }
 }

@@ -6,13 +6,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class QueryUtils {
 
-    private static final String URL_GUARDIAN = "";
+    private static final String URL_GUARDIAN =
+            "https://content.guardianapis.com/search?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&q=games&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
     public static URL createURL(){
         URL url = null;
@@ -26,7 +32,69 @@ public class QueryUtils {
         return url;
     }
 
-    public static ArrayList<Article> parseJSON(String jsonData)
+    public static ArrayList<Article> fetchAsyncArticles(URL url)
+    {
+        String jsonData = "";
+
+        try{
+            jsonData = makeHttpRequest(url);
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return parseJSON(jsonData);
+    }
+
+    private static String makeHttpRequest(URL url) throws IOException
+    {
+        String json = "";
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.connect();
+
+            // Check if the server responded successfully to the request
+            if(connection.getResponseCode() == 200) {
+                inputStream = connection.getInputStream();
+                json = readInputStreamToString(inputStream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources if they were opened
+            if(connection != null)
+                connection.disconnect();
+            if(inputStream != null)
+                inputStream.close();
+        }
+
+        return json;
+    }
+
+
+    private static String readInputStreamToString(InputStream inputStream) throws IOException{
+        StringBuilder stringBuilder = new StringBuilder();
+
+        // Creates a buffer reader to read the stream line by line
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+
+        // Read the stream
+        while((line = bufferedReader.readLine()) != null){
+            stringBuilder.append(line);
+            stringBuilder.append('\n');
+        }
+
+        // Return the json as string
+        return stringBuilder.toString();
+    }
+
+    private static ArrayList<Article> parseJSON(String jsonData)
     {
         if(TextUtils.isEmpty(jsonData))
             return null;
@@ -38,26 +106,19 @@ public class QueryUtils {
             JSONArray results = root.getJSONObject("response").optJSONArray("results");
 
             if(results != null){
-                for (int i = 0; i < results.length(); i++) {
-                    String title;
-                    String authorName;
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject current = results.getJSONObject(i);
+                    String title = current.optString("webTitle");
+                    JSONArray tags = current.optJSONArray("tags");
+                    String authorName = "";
 
-                    String webTitle = results.getJSONObject(i).optString("webTitle");
-                    String[] titleAndPossibleAuthor = getTitle(webTitle);
-
-                    // If the titleAndPossibleAuthor field already contains the author's name, just grab it
-                    // Otherwise, a deeper search is necessary
-                    if(titleAndPossibleAuthor != null){
-                        title = titleAndPossibleAuthor[0];
-                        authorName = titleAndPossibleAuthor[1];
-                    } else {
-                        title = webTitle;
-                        authorName = getAuthorName(results.getJSONObject(i));
+                    if(tags != null && tags.length() > 0){
+                        authorName = tags.getJSONObject(0).optString("webTitle");
                     }
 
-                    String url = results.getJSONObject(i).optString("webUrl");
-                    String sectionName = results.getJSONObject(i).optString("sectionName");
-                    String date = results.getJSONObject(i).optString("webPublicationDate");
+                    String url = current.optString("webUrl");
+                    String sectionName = current.optString("sectionName");
+                    String date = current.optString("webPublicationDate");
 
                     // Add to the articles list
                     articles.add(new Article(title, url, sectionName, authorName, date));
@@ -68,21 +129,6 @@ public class QueryUtils {
         }
 
         return articles;
-    }
-
-    private static String getAuthorName(JSONObject jsonObject){
-        // TODO: if the title already contains the author name, take it. Otherwise, get deeper and retrieve contributor's name
-        return "";
-    }
-
-    // Returns the title of the article. It may also return the author's name if it is on the title's string
-    private static String[] getTitle(String title)
-    {
-        if(title.contains("|")){
-            return title.split(" \\| ");
-        }
-
-        return null;
     }
 
 }
