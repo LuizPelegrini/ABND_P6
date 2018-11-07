@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
     private Context mContext;   // The context coming from the MainActivity
     private List<Article> mArticles;
+    private SimpleDateFormat mDateFormatter;
 
     // ViewHolder design pattern to remove unnecessary findViewById calls
     private static class ViewHolder {
@@ -29,6 +33,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         super(context, 0, articles);
         this.mArticles = articles;
         this.mContext = context;
+        this.mDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
     }
 
     @NonNull
@@ -57,7 +62,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         if(article != null) {
             viewHolder.titleTextView.setText(article.getTitle());
 
-            // If there is no author's name, hides the author's textview
+            // If there is no author's name, hides the author's TextView
             if(TextUtils.isEmpty(article.getAuthorName()))
                 viewHolder.authorNameTextView.setVisibility(View.GONE);
             else {
@@ -66,7 +71,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             }
 
             viewHolder.sectionNameTextView.setText(article.getSectionName());
-            viewHolder.dateTextView.setText(article.getDatePublished());
+
+            String[] dateTime = formatISODate(article.getDatePublished());
+            viewHolder.dateTextView.setText(mContext.getString(R.string.datetime_info, dateTime[0], dateTime[1]));
         }
 
         return convertView;
@@ -77,5 +84,24 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         mArticles.clear();
         mArticles.addAll(articles);
         notifyDataSetChanged();
+    }
+
+    // Format ISO 8601 date to be parsed as (dd MM yyyy)
+    private String[] formatISODate(String dateTimeInfo){
+        String[] dateTimeFormatted = new String[2];
+        dateTimeFormatted[0] = "";
+        dateTimeFormatted[1] = "";
+
+        try {
+            Date date = mDateFormatter.parse(dateTimeInfo);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy'T'hh:mm");
+            String dateFormatted = formatter.format(date);
+
+            dateTimeFormatted = dateFormatted.split("T");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateTimeFormatted;
     }
 }

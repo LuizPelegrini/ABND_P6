@@ -10,6 +10,8 @@ import java.util.List;
 
 public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
+    List<Article> mData;
+
     public ArticleLoader(@NonNull Context context) {
         super(context);
     }
@@ -27,8 +29,16 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
     @Override
     protected void onStartLoading() {
-        forceLoad();
+        // First, try to deliver cached results if there is data
+        if(mData != null)
+            deliverResult(mData);
+        else
+            forceLoad();
     }
 
-
+    @Override
+    public void deliverResult(@Nullable List<Article> data) {
+        mData = data;
+        super.deliverResult(data);
+    }
 }

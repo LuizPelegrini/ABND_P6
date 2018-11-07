@@ -1,4 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">ABND_P6</string>
     <string name="by_author_name">By <xliff:g id="author_name" example="Stewart MacFarlane">%s</xliff:g></string>
+    <string name="no_network">No network.</string>
+    <string name="no_articles">No Articles Found.</string>
+    <string name="datetime_info">On <xliff:g id="date">%s</xliff:g> at <xliff:g id="time">%s</xliff:g></string>
 </resources>
