@@ -71,9 +71,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             }
 
             viewHolder.sectionNameTextView.setText(article.getSectionName());
-
-            String[] dateTime = formatISODate(article.getDatePublished());
-            viewHolder.dateTextView.setText(mContext.getString(R.string.datetime_info, dateTime[0], dateTime[1]));
+            viewHolder.dateTextView.setText(mContext.getString(R.string.datetime_info, formatISODate(article.getDatePublished())));
         }
 
         return convertView;
@@ -87,17 +85,13 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
     }
 
     // Format ISO 8601 date to be parsed as (dd MM yyyy)
-    private String[] formatISODate(String dateTimeInfo){
-        String[] dateTimeFormatted = new String[2];
-        dateTimeFormatted[0] = "";
-        dateTimeFormatted[1] = "";
+    private String formatISODate(String dateTimeInfo){
+        String dateTimeFormatted = "";
 
         try {
             Date date = mDateFormatter.parse(dateTimeInfo);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy'T'hh:mm");
-            String dateFormatted = formatter.format(date);
-
-            dateTimeFormatted = dateFormatted.split("T");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+            dateTimeFormatted = formatter.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
