@@ -1,8 +1,10 @@
 package com.example.android.abnd_p6;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,12 +26,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    ArticleAdapter mArticleAdapter;
-    ConnectivityManager.NetworkCallback mNetworkCallback;
-    ConnectivityManager mConnectivityManager;
-    ProgressBar mProgressBar;
-    TextView mInfoTextView;
-    boolean mIsNetworkAvailable;
+    ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
+    ConnectivityManager.NetworkCallback mNetworkCallback;   // Contains the callbacks responsible to listen to network changes
+    ConnectivityManager mConnectivityManager;               // The connectivity manager
+    ProgressBar mProgressBar;                               // The progress bar view that is shown during loading
+    TextView mInfoTextView;                                 // The text view that appears in case no data or no network is found
+    boolean mIsNetworkAvailable;                            // Control variable that says if the network is available or not
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,32 +51,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Creates the adapter for the list view
         mArticleAdapter = new ArticleAdapter(this, new ArrayList<Article>());
         listView.setAdapter(mArticleAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Gets the article
+                Article article = mArticleAdapter.getItem(i);
 
-        // Using a non-deprecated approach to listen to network status changes
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mNetworkCallback = new ConnectivityManager.NetworkCallback() {
-                @Override
-                public void onAvailable(Network network) {
-                    super.onAvailable(network);
-                    mIsNetworkAvailable = true;
+                // Creates an intent, put some data on it, and toss the intent to a browser
+                // if there is one installed
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(article.getUrl()));
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivity(intent);
                 }
+            }
+        });
 
-                @Override
-                public void onLost(Network network) {
-                    super.onLost(network);
-                    mIsNetworkAvailable = false;
-                }
-
-                @Override
-                public void onUnavailable() {
-                    super.onUnavailable();
-                    mIsNetworkAvailable = false;
-                }
-            };
-
-            // Registers this NetworkCallback object to the ConnectivityManager
-            mConnectivityManager.registerDefaultNetworkCallback(mNetworkCallback);
-        }
+        ListenToNetworkChanges();
     }
 
     @NonNull
@@ -129,5 +123,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(@NonNull Loader loader) {
 
+    }
+
+    // Register callbacks to start listening to network changes
+    private void ListenToNetworkChanges()
+    {
+        // Using a non-deprecated approach to listen to network status changes
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mNetworkCallback = new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(Network network) {
+                    super.onAvailable(network);
+                    mIsNetworkAvailable = true;
+                }
+
+                @Override
+                public void onLost(Network network) {
+                    super.onLost(network);
+                    mIsNetworkAvailable = false;
+                }
+
+                @Override
+                public void onUnavailable() {
+                    super.onUnavailable();
+                    mIsNetworkAvailable = false;
+                }
+            };
+
+            // Registers this NetworkCallback object to the ConnectivityManager
+            mConnectivityManager.registerDefaultNetworkCallback(mNetworkCallback);
+        }
     }
 }
