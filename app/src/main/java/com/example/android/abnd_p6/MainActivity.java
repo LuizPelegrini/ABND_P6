@@ -29,7 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>{
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String URL_GUARDIAN = "https://content.guardianapis.com/search?api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
+    private static final String URL_GUARDIAN = "https://content.guardianapis.com/search?show-tags=contributor&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
     ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
     ConnectivityManager.NetworkCallback mNetworkCallback;   // Contains the callbacks responsible to listen to network changes
