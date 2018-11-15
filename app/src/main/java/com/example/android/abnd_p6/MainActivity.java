@@ -119,10 +119,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-
+    // When the activity is destroyed (making the data unavailable), this method is called
     @Override
     public void onLoaderReset(@NonNull Loader loader) {
-
+        // Reset data
+        mArticleAdapter.setArticles(new ArrayList<Article>());
     }
 
     // Register callbacks to start listening to network changes
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 public void onAvailable(Network network) {
                     super.onAvailable(network);
                     mIsNetworkAvailable = true;
+// ***** Tried to call loadInBackground() here but android says this method must be called from the main thread ****
                 }
 
                 @Override
