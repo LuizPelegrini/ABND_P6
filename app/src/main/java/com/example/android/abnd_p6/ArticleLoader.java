@@ -10,16 +10,18 @@ import java.util.List;
 
 public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
-    List<Article> mData;
+    private List<Article> mData;
+    private String mUrlString;
 
-    public ArticleLoader(@NonNull Context context) {
+    public ArticleLoader(@NonNull Context context, String urlString) {
         super(context);
+        mUrlString = urlString;
     }
 
     @Nullable
     @Override
     public List<Article> loadInBackground() {
-        URL url = QueryUtils.createURL();
+        URL url = QueryUtils.createURL(mUrlString);
 
         if(url != null)
             return QueryUtils.fetchAsyncArticles(url);

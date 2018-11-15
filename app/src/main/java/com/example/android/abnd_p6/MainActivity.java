@@ -1,11 +1,13 @@
 package com.example.android.abnd_p6;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -27,6 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>{
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String URL_GUARDIAN = "https://content.guardianapis.com/search?api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
     ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
     ConnectivityManager.NetworkCallback mNetworkCallback;   // Contains the callbacks responsible to listen to network changes
@@ -75,7 +78,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<List<Article>> onCreateLoader(int i, @Nullable Bundle bundle) {
-        return new ArticleLoader(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String topic = sharedPreferences.getString(
+                getString(R.string.settings_topic_key),
+                getString(R.string.settings_topic_default_value));
+
+        Uri.Builder uriBuilder = Uri.parse(URL_GUARDIAN).buildUpon();
+        uriBuilder.appendQueryParameter("section", topic);
+
+        return new ArticleLoader(this, uriBuilder.toString());
     }
 
     @Override

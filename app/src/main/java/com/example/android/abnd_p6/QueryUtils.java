@@ -17,14 +17,16 @@ import java.util.ArrayList;
 
 public class QueryUtils {
 
-    private static final String URL_GUARDIAN =
-            "https://content.guardianapis.com/search?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
-    public static URL createURL(){
+
+
+    //?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c
+
+    public static URL createURL(String urlString){
         URL url = null;
 
         try {
-            url = new URL(URL_GUARDIAN);
+            url = new URL(urlString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
