@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
-    private List<Article> mData;
-    private String mUrlString;
+    private List<Article> mData;        // The list of articles fetched
+    private String mUrlString;          // The string representing the url
 
     public ArticleLoader(@NonNull Context context, String urlString) {
         super(context);

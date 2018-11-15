@@ -14,7 +14,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,12 +79,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<Article>> onCreateLoader(int i, @Nullable Bundle bundle) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Get the saved preference for the topic
         String topic = sharedPreferences.getString(
                 getString(R.string.settings_topic_key),
                 getString(R.string.settings_topic_default_value));
 
+        // Get the saved preference for the order
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default_value));
+
+        // Builds the url using a Builder and the preferences provided by the user
         Uri.Builder uriBuilder = Uri.parse(URL_GUARDIAN).buildUpon();
+        uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("section", topic);
+        uriBuilder.appendQueryParameter("order-by", orderBy);
 
         return new ArticleLoader(this, uriBuilder.toString());
     }
@@ -113,9 +121,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mInfoTextView.setVisibility(View.VISIBLE);
             }
         }
-
-
-
         // For API level 23 and below
         else {
             // networkInfo.isConnectedOrConnecting() is deprecated, so I used isConnected() only

@@ -17,11 +17,6 @@ import java.util.ArrayList;
 
 public class QueryUtils {
 
-
-
-
-    //?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c
-
     public static URL createURL(String urlString){
         URL url = null;
 

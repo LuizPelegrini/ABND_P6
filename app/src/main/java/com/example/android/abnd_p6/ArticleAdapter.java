@@ -17,9 +17,9 @@ import java.util.List;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
-    private Context mContext;   // The context coming from the MainActivity
-    private List<Article> mArticles;
-    private SimpleDateFormat mDateFormatter;
+    private Context mContext;                   // The context coming from the MainActivity
+    private List<Article> mArticles;            // The list of articles used by this Adapter
+    private SimpleDateFormat mDateFormatter;    // A simple date formatter
 
     // ViewHolder design pattern to remove unnecessary findViewById calls
     private static class ViewHolder {
