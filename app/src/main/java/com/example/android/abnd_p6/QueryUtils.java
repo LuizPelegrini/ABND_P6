@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class QueryUtils {
 
     private static final String URL_GUARDIAN =
-            "https://content.guardianapis.com/search?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&q=games&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
+            "https://content.guardianapis.com/search?section=games&from-date=2018-10-01&order-by=newest&show-tags=contributor&format=json&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
     public static URL createURL(){
         URL url = null;

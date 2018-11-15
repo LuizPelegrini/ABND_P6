@@ -2,7 +2,7 @@
 <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.example.android.abnd_p6.SettingsActivity"
+    android:name="com.example.android.abnd_p6.SettingsActivity$ArticlePreferenceFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">

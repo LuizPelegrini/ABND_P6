@@ -6,4 +6,17 @@
     <string name="datetime_info">On <xliff:g id="date">%s</xliff:g></string>
 
     <string name="settings">Article Settings</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Preference A: Topic -->
+    <string name="settings_topic_label">Topic</string>
+    <string name="settings_topic_key" translatable="false">topic</string>
+    <string name="settings_topic_default_value" translatable="false">@string/settings_topic_games_value</string>
+
+    <!-- Games topic -->
+    <string name="settings_topic_games_label">Games</string>
+    <string name="settings_topic_games_value" translatable="false">games</string>
+    <!-- Politics topic -->
+    <string name="settings_topic_politics_label">Politics</string>
+    <string name="settings_topic_politics_value" translatable="false">politics</string>
 </resources>
