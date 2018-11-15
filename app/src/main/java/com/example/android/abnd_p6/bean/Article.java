@@ -1,4 +1,4 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.bean;
 
 public class Article {
 

@@ -1,6 +1,8 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.utils;
 
 import android.text.TextUtils;
+
+import com.example.android.abnd_p6.bean.Article;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +17,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class QueryUtils {
+public final class QueryUtils {
+
+    // Suppressing the constructor
+    private QueryUtils(){}
 
     public static URL createURL(String urlString){
         URL url = null;

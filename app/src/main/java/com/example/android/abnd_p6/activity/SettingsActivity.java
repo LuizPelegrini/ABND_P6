@@ -1,4 +1,4 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.activity;
 
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.android.abnd_p6.R;
 
 import java.util.List;
 import java.util.prefs.PreferenceChangeListener;

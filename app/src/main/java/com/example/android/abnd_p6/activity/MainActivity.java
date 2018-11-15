@@ -1,4 +1,4 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +22,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.abnd_p6.R;
+import com.example.android.abnd_p6.adapter.ArticleAdapter;
+import com.example.android.abnd_p6.bean.Article;
+import com.example.android.abnd_p6.loader.ArticleLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +35,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String URL_GUARDIAN = "https://content.guardianapis.com/search?show-tags=contributor&api-key=d755ecc5-4bfe-4905-ac10-523870d7e89c";
 
-    ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
-    ConnectivityManager.NetworkCallback mNetworkCallback;   // Contains the callbacks responsible to listen to network changes
-    ConnectivityManager mConnectivityManager;               // The connectivity manager
-    ProgressBar mProgressBar;                               // The progress bar view that is shown during loading
-    TextView mInfoTextView;                                 // The text view that appears in case no data or no network is found
-    boolean mIsNetworkAvailable;                            // Control variable that says if the network is available or not
+    private ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
+    private ConnectivityManager mConnectivityManager;               // The connectivity manager
+    private ProgressBar mProgressBar;                               // The progress bar view that is shown during loading
+    private TextView mInfoTextView;                                 // The text view that appears in case no data or no network is found
+    private boolean mIsNetworkAvailable;                            // Control variable that says if the network is available or not
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         // Using a non-deprecated approach to listen to network status changes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mNetworkCallback = new ConnectivityManager.NetworkCallback() {
+            // Contains the callbacks responsible to listen to network changes
+            ConnectivityManager.NetworkCallback mNetworkCallback = new ConnectivityManager.NetworkCallback() {
                 @Override
                 public void onAvailable(Network network) {
                     super.onAvailable(network);

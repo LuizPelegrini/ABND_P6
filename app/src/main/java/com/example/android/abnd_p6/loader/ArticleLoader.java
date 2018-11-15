@@ -1,9 +1,12 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
+
+import com.example.android.abnd_p6.utils.QueryUtils;
+import com.example.android.abnd_p6.bean.Article;
 
 import java.net.URL;
 import java.util.List;

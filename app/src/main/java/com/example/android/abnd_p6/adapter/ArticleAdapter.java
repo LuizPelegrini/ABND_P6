@@ -1,4 +1,4 @@
-package com.example.android.abnd_p6;
+package com.example.android.abnd_p6.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.android.abnd_p6.bean.Article;
+import com.example.android.abnd_p6.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +32,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         private TextView dateTextView;
     }
 
-    ArticleAdapter(@NonNull Context context, @NonNull List<Article> articles) {
+    public ArticleAdapter(@NonNull Context context, @NonNull List<Article> articles) {
         super(context, 0, articles);
         this.mArticles = articles;
         this.mContext = context;
