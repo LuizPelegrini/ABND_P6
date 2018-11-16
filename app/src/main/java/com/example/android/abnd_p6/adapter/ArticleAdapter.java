@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
     private Context mContext;                   // The context coming from the MainActivity
@@ -25,11 +28,16 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
     private SimpleDateFormat mDateFormatter;    // A simple date formatter
 
     // ViewHolder design pattern to remove unnecessary findViewById calls
-    private static class ViewHolder {
-        private TextView titleTextView;
-        private TextView sectionNameTextView;
-        private TextView authorNameTextView;
-        private TextView dateTextView;
+    static class ViewHolder {
+       @BindView(R.id.title_text_view) TextView titleTextView;
+       @BindView(R.id.section_text_view) TextView sectionNameTextView;
+       @BindView(R.id.author_text_view) TextView authorNameTextView;
+       @BindView(R.id.date_text_view) TextView dateTextView;
+
+       public ViewHolder(View view){
+           // Assign all the references of this class' textViews by looking up at given view
+           ButterKnife.bind(this, view);
+       }
     }
 
     public ArticleAdapter(@NonNull Context context, @NonNull List<Article> articles) {
@@ -47,13 +55,8 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         // If there is no view to be recycle, inflate a new one
         if(convertView == null) {
-            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
-
-            viewHolder.titleTextView = convertView.findViewById(R.id.title_text_view);
-            viewHolder.authorNameTextView = convertView.findViewById(R.id.author_text_view);
-            viewHolder.sectionNameTextView = convertView.findViewById(R.id.section_text_view);
-            viewHolder.dateTextView = convertView.findViewById(R.id.date_text_view);
+            viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
         }else{

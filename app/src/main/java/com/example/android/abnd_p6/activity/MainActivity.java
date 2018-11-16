@@ -30,6 +30,9 @@ import com.example.android.abnd_p6.loader.ArticleLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>{
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -37,8 +40,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private ArticleAdapter mArticleAdapter;                         // The adapter that will fill the list
     private ConnectivityManager mConnectivityManager;               // The connectivity manager
-    private ProgressBar mProgressBar;                               // The progress bar view that is shown during loading
-    private TextView mInfoTextView;                                 // The text view that appears in case no data or no network is found
+    @BindView(R.id.loading_spinner) ProgressBar mProgressBar;       // The progress bar view that is shown during loading
+    @BindView(R.id.info_text_view) TextView mInfoTextView;          // The text view that appears in case no data or no network is found
+    @BindView(R.id.list_view) ListView listView;                    // The ListView responsible to show the list of articles
     private boolean mIsNetworkAvailable;                            // Control variable that says if the network is available or not
 
     @Override
@@ -46,11 +50,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Bind the views using ButterKnife library
+        ButterKnife.bind(this);
+
         // Retrieves connectivity manager and gets view references
         mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        ListView listView = findViewById(R.id.list_view);
-        mProgressBar = findViewById(R.id.loading_spinner);
-        mInfoTextView = findViewById(R.id.info_text_view);
         mInfoTextView.setVisibility(View.INVISIBLE);
 
         // Init the Loader
