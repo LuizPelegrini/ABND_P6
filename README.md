@@ -3,4 +3,4 @@ News app from Google Udacity Android course. News app that requests content to T
 
 
 
-![Screen shot](https://github.com/LuizPelegrini/ABND_P6/blob/master/app_screen.png)
+![App screen shot](https://github.com/LuizPelegrini/ABND_P6/blob/master/app_screen.png)
